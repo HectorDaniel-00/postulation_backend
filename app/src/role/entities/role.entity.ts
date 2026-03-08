@@ -1,14 +1,25 @@
-import { UserEntity } from 'src/user/entities/user.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+/**
+ * 
+ * import { RoleEnum } from 'src/common/enum';
+ * import { UserEntity } from 'src/user/entities/user.entity';
+ * import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('role')
-export class RoleEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ unique: true })
-  name: string;
-
-  @OneToMany(() => UserEntity, (user) => user.role)
-  users: UserEntity[];
-}
+ * @Entity('role')
+ * export class RoleEntity {
+ *   @PrimaryGeneratedColumn('uuid')
+ *   id: string;
+ *
+ * @Column({
+ * unique: true,
+ *   type: 'enum',
+ *   enum: RoleEnum,
+ *   default: RoleEnum.CODER,
+ *  })
+ *  name: string;
+ *
+ *  @OneToMany(() => UserEntity, (user) => user.role)
+ *  users: UserEntity[];
+ * }
+ * 
+ * 
+ */

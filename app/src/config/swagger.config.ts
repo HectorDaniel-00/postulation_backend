@@ -15,7 +15,7 @@ export function setupSwagger(app: INestApplication) {
       'Endpoints relacionados con la autenticación y autorización',
     )
     .addTag('Users', 'Gestión de usuarios')
-    .addTag('Roles', 'Gestión de roles y permisos')
+    // .addTag('Roles', 'Gestión de roles y permisos')
     .addTag('Vacancies', 'Gestión de vacantes')
     .addBearerAuth(
       {

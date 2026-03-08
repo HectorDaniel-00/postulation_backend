@@ -6,8 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,11 +19,10 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { AuthRoleGuard } from 'src/common/guard/role.guard';
-import { Role } from 'src/common/enum';
+import { RoleEnum } from 'src/common/enum';
 
 @ApiTags('Users')
-@ApiBearerAuth()
+@ApiBearerAuth('access-token')
 @Controller('user')
 export class UserController {
   constructor(private readonly service: UserService) {}
@@ -35,9 +32,7 @@ export class UserController {
   @ApiResponse({ status: 201, description: 'Usuario creado exitosamente.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado.' })
   @Post()
-  @Roles(Role.ADMIN, Role.GESTOR)
-  @UseGuards(AuthRoleGuard)
-  @UseGuards(AuthRoleGuard)
+  @Roles(RoleEnum.ADMIN)
   create(@Body() dto: CreateUserDto) {
     const user = this.service.create(dto);
     return plainToInstance(ResponseUserDto, user, {
@@ -49,9 +44,7 @@ export class UserController {
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
   @ApiResponse({ status: 200, description: 'Lista de usuarios.' })
   @Get()
-  @Roles(Role.ADMIN)
-  @UseGuards(AuthRoleGuard)
-  @UseGuards(AuthRoleGuard)
+  //@Roles(RoleEnum.GESTOR, RoleEnum.ADMIN, RoleEnum.CODER)
   findAll() {
     const user = this.service.findAll();
     return plainToInstance(ResponseUserDto, user, {
@@ -64,9 +57,8 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Detalles del usuario.' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
   @Get(':id')
-  @Roles(Role.ADMIN, Role.GESTOR)
-  @UseGuards(AuthRoleGuard)
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  @Roles(RoleEnum.ADMIN, RoleEnum.GESTOR)
+  findOne(@Param('id') id: string) {
     const user = this.service.findOne(id);
     return plainToInstance(ResponseUserDto, user, {
       excludeExtraneousValues: true,
@@ -75,12 +67,8 @@ export class UserController {
 
   @Message('Usuario actualizado con exito')
   @Patch(':id')
-  @Roles(Role.ADMIN)
-  @UseGuards(AuthRoleGuard)
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  @Roles(RoleEnum.ADMIN, RoleEnum.CODER, RoleEnum.GESTOR)
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = this.service.update(id, updateUserDto);
     return plainToInstance(ResponseUserDto, user, {
       excludeExtraneousValues: true,
@@ -89,9 +77,8 @@ export class UserController {
 
   @Message('Usuario eliminado con exito')
   @Delete(':id')
-  @Roles(Role.ADMIN)
-  @UseGuards(AuthRoleGuard)
-  remove(@Param('id', ParseIntPipe) id: string) {
-    return this.service.remove(+id);
+  @Roles(RoleEnum.ADMIN)
+  remove(@Param('id') id: string) {
+    return this.service.remove(id);
   }
 }

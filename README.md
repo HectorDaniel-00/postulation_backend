@@ -58,18 +58,18 @@ El proyecto está organizado en módulos para facilitar su mantenimiento y escal
 1. Crea un archivo `.env` en la raíz del proyecto y define las siguientes variables de entorno:
 
    ```env
-   APP_CONTAINER_NAME=app-container
-   APP_PORT=3000
-   NODE_ENV=development
-   POSTGRES_USER=user
-   POSTGRES_PASSWORD=password
-   POSTGRES_DB=database
-   POSTGRES_PORT=5432
-   APP_CPU_LIMIT=0.5
-   APP_MEM_LIMIT=512M
-   DB_CPU_LIMIT=0.5
-   DB_MEM_LIMIT=512M
-   DB_CONTAINER_NAME=db-container
+   APP_CONTAINER_NAME=
+   APP_PORT=
+   NODE_ENV=
+   POSTGRES_USER=
+   POSTGRES_PASSWORD=
+   POSTGRES_DB=
+   POSTGRES_PORT=
+   APP_CPU_LIMIT=
+   APP_MEM_LIMIT=
+   DB_CPU_LIMIT=
+   DB_MEM_LIMIT=
+   DB_CONTAINER_NAME=
    ```
 
 2. Configura la base de datos en el archivo `src/config/typeOrm.config.ts`.

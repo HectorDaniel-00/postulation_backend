@@ -1,3 +1,5 @@
+/**
+ * 
 import {
   BadRequestException,
   ConflictException,
@@ -10,6 +12,7 @@ import { RoleRepository } from './entities/role.repository';
 @Injectable()
 export class RoleService {
   constructor(private readonly repo: RoleRepository) {}
+
   async create(dto: CreateRoleDto) {
     const role = await this.repo.findByName(dto.name);
     if (role) {
@@ -37,8 +40,6 @@ export class RoleService {
     }
     return role;
   }
-
-  async remove(id: number) {
-    return await this.repo.remove(id);
-  }
 }
+
+  */

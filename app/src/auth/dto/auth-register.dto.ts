@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
+import { RoleEnum } from 'src/common/enum';
 
 export class AuthRegisterDto {
   @ApiProperty({
@@ -33,4 +34,16 @@ export class AuthRegisterDto {
   @IsString({ message: 'Password must be a string' })
   @Length(6, 15, { message: 'Password must be between 6 and 15 characters' })
   password: string;
+
+  @ApiProperty({
+    example: 'coder',
+    description: 'gestor o coder',
+    type: 'string',
+    required: true,
+  })
+  @IsNotEmpty({ message: 'Role is required' })
+  @IsEnum(RoleEnum, {
+    message: `Los roles permitidos son ${RoleEnum.CODER}, ${RoleEnum.GESTOR} `,
+  })
+  role: RoleEnum;
 }

@@ -1,7 +1,10 @@
+/**
+ * 
+ * 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoleEntity } from './role.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateRoleDto } from '../dto/create-role.dto';
 
 @Injectable()
@@ -22,8 +25,6 @@ export class RoleRepository {
   async findByName(name: string): Promise<RoleEntity | null> {
     return await this.repo.findOne({ where: { name } });
   }
-
-  async remove(id: number): Promise<DeleteResult | null> {
-    return await this.repo.delete(id);
-  }
 }
+
+*/
