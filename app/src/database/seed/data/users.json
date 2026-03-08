@@ -1,20 +1,17 @@
 [
     {
-        "name": "Admin",
-        "email": "admin@example.com",
-        "password": "$2a$10$SGbAtPbbwp6KpzDx/1GoZOgY27QR9rd8SFo.fVoUm9WJ1ppNfmsJe",
-        "role_id": 1
+        "name": "Chonchito Feliz",
+        "email": "chonchitofeliz@example.com",
+        "password": "chonchitofeliz123"
     },
     {
-        "name": "Gestor",
-        "email": "gestor@example.com",
-        "password": "$2a$10$ORx36Dktt5ihUzBIEvDKoeGJhHQN32F9s9Ky9nTkXIttX4CH9dfpe",
-        "role_id": 2
+        "name": "jhon doe",
+        "email": "jhonDoee@example.com",
+        "password": "jhondoe123"
     },
     {
-        "name": "user",
-        "email": "user@example.com",
-        "password": "$2a$10$.49ySGfN/d7oLfTWCGGCquwBnQJ/FgQj3SFMGTmPHwAT85PcTwP2W",
-        "role_id": 3
+        "name": "Coder",
+        "email": "coder@example.com",
+        "password": "coder123"
     }
 ]
