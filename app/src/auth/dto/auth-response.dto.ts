@@ -2,7 +2,7 @@ import { Exclude, Expose } from 'class-transformer';
 
 export class AuthResponseDto {
   @Expose()
-  id?: number;
+  id?: string;
 
   @Expose()
   name?: string;
@@ -14,7 +14,7 @@ export class AuthResponseDto {
   password: string;
 
   @Expose()
-  role?: number;
+  role?: string;
 
   @Expose()
   access_token?: string;
