@@ -4,14 +4,16 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  Unique,
 } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { VacancyEntity } from '../../vacancy/entities/vacancy.entity';
 
 @Entity('applications')
+@Unique(['user', 'vacancy'])
 export class ApplicationEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => UserEntity, (user) => user.id)
   @JoinColumn({ name: 'user_id' })

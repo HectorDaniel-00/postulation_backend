@@ -22,7 +22,7 @@ export class ApplicationRepository {
     );
   }
 
-  async findByUserAndVacancy(userId: number, vacancyId: number) {
+  async findByUserAndVacancy(userId: string, vacancyId: string) {
     return this.repo.findOne({
       where: {
         user: { id: userId },
@@ -31,7 +31,7 @@ export class ApplicationRepository {
     });
   }
 
-  async findAllByUser(userId: number) {
+  async findAllByUser(userId: string) {
     return this.repo.find({
       where: { user: { id: userId } },
       relations: ['vacancy'],
@@ -39,7 +39,7 @@ export class ApplicationRepository {
     });
   }
 
-  async findAllByVacancy(vacancyId: number) {
+  async findAllByVacancy(vacancyId: string) {
     return this.repo.find({
       where: { vacancy: { id: vacancyId } },
       relations: ['user'],

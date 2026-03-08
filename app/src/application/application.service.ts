@@ -5,7 +5,7 @@ import { ApplicationRepository } from './entities/application.repository';
 export class ApplicationService {
   constructor(private readonly repo: ApplicationRepository) {}
 
-  async apply(userId: number, vacancyId: number) {
+  async apply(userId: string, vacancyId: string) {
     const dto = { userId, vacancyId };
     const alreadyApplied = await this.repo.hasUserApplied(dto);
 
