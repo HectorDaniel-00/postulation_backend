@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Message, Public, Roles } from 'src/common/decorator';
+import { Message, Roles } from 'src/common/decorator';
 import { plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto';
 import {
@@ -20,7 +19,6 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { AuthRoleGuard } from 'src/common/guard/role.guard';
 import { RoleEnum } from 'src/common/enum';
 
 @ApiTags('Users')
@@ -46,7 +44,6 @@ export class UserController {
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
   @ApiResponse({ status: 200, description: 'Lista de usuarios.' })
   @Get()
-  @Public()
   //@Roles(RoleEnum.GESTOR, RoleEnum.ADMIN, RoleEnum.CODER)
   findAll() {
     const user = this.service.findAll();
@@ -71,7 +68,6 @@ export class UserController {
   @Message('Usuario actualizado con exito')
   @Patch(':id')
   @Roles(RoleEnum.ADMIN, RoleEnum.CODER, RoleEnum.GESTOR)
-  @UseGuards(AuthRoleGuard)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = this.service.update(id, updateUserDto);
     return plainToInstance(ResponseUserDto, user, {
@@ -82,7 +78,6 @@ export class UserController {
   @Message('Usuario eliminado con exito')
   @Delete(':id')
   @Roles(RoleEnum.ADMIN)
-  @UseGuards(AuthRoleGuard)
   remove(@Param('id') id: string) {
     return this.service.remove(id);
   }

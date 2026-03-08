@@ -10,7 +10,7 @@ import {
 import { RoleEnum } from 'src/common/enum';
 
 @ApiTags('Apply')
-@ApiBearerAuth()
+@ApiBearerAuth('access-token')
 @Controller('apply')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}

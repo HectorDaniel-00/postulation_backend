@@ -31,7 +31,7 @@ export class VacancyController {
   @ApiOperation({ summary: 'Crear una nueva vacante' })
   @ApiResponse({ status: 201, description: 'Vacante creada exitosamente.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado.' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @Post()
   @Roles(RoleEnum.ADMIN, RoleEnum.GESTOR)
   @UseGuards(AuthRoleGuard)
@@ -65,7 +65,7 @@ export class VacancyController {
     description: 'Vacante actualizada exitosamente.',
   })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @Patch(':id')
   @Roles(RoleEnum.ADMIN, RoleEnum.GESTOR)
   @UseGuards(AuthRoleGuard)
@@ -79,7 +79,7 @@ export class VacancyController {
     status: 200,
     description: 'Estado de la vacante actualizado.',
   })
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
   @Get(':id/active')
   @Roles(RoleEnum.ADMIN, RoleEnum.GESTOR, RoleEnum.CODER)
