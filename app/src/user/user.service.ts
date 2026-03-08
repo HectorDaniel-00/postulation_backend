@@ -8,20 +8,19 @@ import {
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { UserRepository } from './entities/user.repository';
 import * as bcrypt from 'bcrypt';
-
-import { RoleService } from 'src/role/role.service';
-import { Role } from 'src/common/enum';
+import { RoleEnum } from 'src/common/enum';
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
   private readonly salRound = 10;
-  constructor(
-    private readonly userRepo: UserRepository,
-    private readonly roleService: RoleService,
-  ) {}
+  constructor(private readonly userRepo: UserRepository) {}
 
   async create(data: CreateUserDto) {
+    const salt = await bcrypt.genSalt(this.salRound);
+    const hashedPassword = await bcrypt.hash(data.password, salt);
+    const roleName = data.role;
+
     const user = await this.userRepo.findOneByEmail(data.email);
     if (user) {
       this.logger.error(`Error el usuario con el email ${user.email}`);
@@ -30,25 +29,20 @@ export class UserService {
       );
     }
 
-    const salt = await bcrypt.genSalt(this.salRound);
-    const hashedPassword = await bcrypt.hash(data.password, salt);
-
-    const resultRol = data.rol ?? Role.GESTOR;
-    const role = await this.roleService.findByName(resultRol);
+    if (roleName != RoleEnum.GESTOR && roleName != RoleEnum.CODER) {
+      this.logger.error('El role ingresado no esta permitido');
+      throw new ConflictException(`El role ingresado no esta permitido`);
+    }
 
     const newUser = {
       name: data.name,
       email: data.email,
       password: hashedPassword,
-      role,
+      role: roleName ?? RoleEnum.CODER,
     };
     const createdUser = await this.userRepo.create(newUser);
-    return {
-      id: createdUser.id,
-      name: createdUser.name,
-      email: createdUser.email,
-      role: createdUser.role.name,
-    };
+
+    return createdUser;
   }
 
   async findAll() {
@@ -60,11 +54,11 @@ export class UserService {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role.name,
+      role: user.role,
     }));
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     if (!id) {
       throw new BadRequestException(
         'El campo requerido esta incompleto o incorrecto',
@@ -77,15 +71,27 @@ export class UserService {
         `Error el usuario con el id ${id} no existe, vuelva a intentarlo con otro id`,
       );
     }
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role.name,
-    };
+
+    return user;
   }
 
-  async update(id: number, data: UpdateUserDto) {
+  async findOneByEmail(email: string) {
+    if (!email) {
+      this.logger.error('EL Campo email esta vacio');
+      throw new BadRequestException('El campo esta invalido');
+    }
+
+    const user = await this.userRepo.findOneByEmail(email);
+
+    if (!user) {
+      this.logger.error(`El usuario con el email ${email} no existe`);
+      throw new NotFoundException('Error no existe ese usuario');
+    }
+
+    return user;
+  }
+
+  async update(id: string, data: UpdateUserDto) {
     if (!id) {
       throw new BadRequestException(
         'El campo requerido (id) esta incompleto, por favor verifique e intente nuevamente',
@@ -103,15 +109,11 @@ export class UserService {
       role: user.role,
     };
     const modifyUser = await this.userRepo.update(id, updateUser);
-    return {
-      id: modifyUser?.id,
-      name: modifyUser?.name,
-      email: modifyUser?.email,
-      role: modifyUser?.role.name,
-    };
+
+    return modifyUser;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     if (!id) {
       throw new BadRequestException('Campo requerido esta vacio');
     }
@@ -121,6 +123,7 @@ export class UserService {
         `El usuario con el id ${id} no existe, cambia el valor y vuelve a intentarlo`,
       );
     }
+
     return user;
   }
 }

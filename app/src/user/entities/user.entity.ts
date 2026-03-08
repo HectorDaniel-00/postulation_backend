@@ -1,16 +1,10 @@
-import { RoleEntity } from 'src/role/entities/role.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { RoleEnum } from '@common/enum/index';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: false, length: 150 })
   name: string;
@@ -21,7 +15,18 @@ export class UserEntity {
   @Column({ nullable: false, type: 'text' })
   password: string;
 
-  @ManyToOne(() => RoleEntity, (role) => role.users)
-  @JoinColumn({ name: 'role_id' })
-  role: RoleEntity;
+  @Column({
+    type: 'enum',
+    enum: RoleEnum,
+    nullable: false,
+  })
+  role: RoleEnum;
 }
+
+/**
+ * ! Mejorar implementar tabla de roles
+ * @ManyToOne(() => RoleEntity, (role) => role.users)
+ * @JoinColumn({ name: 'role_id' })
+ * role: RoleEntity;
+ *
+ */
