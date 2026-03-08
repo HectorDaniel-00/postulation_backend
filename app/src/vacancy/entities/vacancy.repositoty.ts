@@ -21,23 +21,23 @@ export class VacancyRepository {
     return await this.repo.find();
   }
 
-  async findOne(id: number): Promise<VacancyEntity | null> {
+  async findOne(id: string): Promise<VacancyEntity | null> {
     return await this.repo.findOne({ where: { id } });
   }
 
-  async toggleActive(id: number): Promise<VacancyEntity | null> {
+  async toggleActive(id: string): Promise<VacancyEntity | null> {
     return await this.repo.findOne({ where: { id, isActive: true } });
   }
 
   async update(
-    id: number,
+    id: string,
     dto: UpdateVacancyDto,
   ): Promise<VacancyEntity | null> {
     const update = { id, ...dto };
     return await this.repo.save(update);
   }
 
-  async delete(id: number): Promise<DeleteResult> {
+  async delete(id: string): Promise<DeleteResult> {
     return await this.repo.delete(id);
   }
 }

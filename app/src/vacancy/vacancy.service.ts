@@ -23,7 +23,7 @@ export class VacancyService {
     return data;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     if (!id) {
       throw new BadRequestException(
         'El campo requerido esta incompleto o incorrecto',
@@ -38,7 +38,7 @@ export class VacancyService {
     return data;
   }
 
-  async toggleActive(id: number) {
+  async toggleActive(id: string) {
     if (!id) {
       throw new BadRequestException(
         'El campo requerido esta incompleto, por favor verifique e intente nuevamente',
@@ -53,7 +53,7 @@ export class VacancyService {
     return await this.repo.toggleActive(id);
   }
 
-  async update(id: number, dto: UpdateVacancyDto) {
+  async update(id: string, dto: UpdateVacancyDto) {
     if (!id) {
       throw new BadRequestException(
         'El campo requerido esta incompleto, por favor verifique e intente nuevamente',
@@ -66,22 +66,22 @@ export class VacancyService {
       );
     }
     const update: UpdateVacancyDto = {
-      title: dto.title ?? data.title,
-      description: dto.description ?? data.description,
-      seniority: dto.seniority ?? data.seniority,
-      softSkills: dto.softSkills ?? data.softSkills,
-      location: dto.location ?? data.location,
-      modality: dto.modality ?? data.modality,
-      salaryRange: dto.salaryRange ?? data.salaryRange,
-      company: dto.company ?? data.company,
-      tecnologies: dto.tecnologies ?? data.tecnologies,
+      title: dto.title! ?? data.title,
+      description: dto.description! ?? data.description,
+      seniority: dto.seniority! ?? data.seniority,
+      softSkills: dto.softSkills! ?? data.softSkills,
+      location: dto.location! ?? data.location,
+      modality: dto.modality! ?? data.modality,
+      salaryRange: dto.salaryRange! ?? data.salaryRange,
+      company: dto.company! ?? data.company,
+      tecnologies: dto.tecnologies! ?? data.tecnologies,
       isActive: dto.isActive ?? data.isActive,
-      maxApplicants: dto.maxApplicants ?? data.maxApplicants,
+      maxApplicants: dto.maxApplicants! ?? data.maxApplicants,
     };
     return await this.repo.update(id, update);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     if (!id) {
       throw new BadRequestException('Campo requerido esta vacio');
     }

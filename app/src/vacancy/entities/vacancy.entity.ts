@@ -1,9 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ApplicationEntity } from 'src/application/entities/application.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ModalityOpcion } from '../dto';
 
 @Entity('vacancies')
 export class VacancyEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: false })
   title: string;
@@ -23,7 +25,10 @@ export class VacancyEntity {
   @Column({ nullable: false })
   location: string;
 
-  @Column({ nullable: false })
+  @OneToMany(() => ApplicationEntity, (app) => app.vacancy)
+  applications: ApplicationEntity[];
+
+  @Column({ nullable: false, type: 'enum', enum: ModalityOpcion })
   modality: string;
 
   @Column({ name: 'salary_range', nullable: false })
