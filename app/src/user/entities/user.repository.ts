@@ -17,23 +17,29 @@ export class UserRepository {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    return await this.repo.find({ relations: ['role'] });
+    return await this.repo.find({});
   }
 
-  async findOne(id: number): Promise<UserEntity | null> {
-    return await this.repo.findOne({ where: { id }, relations: ['role'] });
+  async findOne(id: string): Promise<UserEntity | null> {
+    return await this.repo.findOne({ where: { id } });
+  }
+
+  async updatePassword(id: string, newPassword: string): Promise<boolean> {
+    const update = await this.repo.update(id, { password: newPassword });
+
+    return update.affected === 1;
   }
 
   async findOneByEmail(email: string): Promise<UserEntity | null> {
-    return await this.repo.findOne({ where: { email }, relations: ['role'] });
+    return await this.repo.findOne({ where: { email } });
   }
 
-  async update(id: number, data: UpdateUserDto): Promise<UserEntity | null> {
+  async update(id: string, data: UpdateUserDto): Promise<UserEntity | null> {
     const updateUser = { id, ...data };
     return await this.repo.save(updateUser);
   }
 
-  async delete(id: number): Promise<DeleteResult> {
+  async delete(id: string): Promise<DeleteResult> {
     return await this.repo.delete(id);
   }
 }

@@ -5,7 +5,6 @@ import configuration from './config/configuration';
 import { envValidationSchema } from './config/validation.schema.config';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
-import { RoleModule } from './role/role.module';
 import { AuthModule } from './auth/auth.module';
 import { VacancyModule } from './vacancy/vacancy.module';
 import { ApplicationModule } from './application/application.module';
@@ -19,7 +18,6 @@ import { ApplicationModule } from './application/application.module';
     }),
     DatabaseModule,
     UserModule,
-    RoleModule,
     AuthModule,
     VacancyModule,
     ApplicationModule,

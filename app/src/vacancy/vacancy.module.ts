@@ -9,6 +9,6 @@ import { VacancyEntity } from './entities/vacancy.entity';
   imports: [TypeOrmModule.forFeature([VacancyEntity])],
   controllers: [VacancyController],
   providers: [VacancyService, VacancyRepository],
-  exports: [VacancyService, VacancyRepository],
+  exports: [VacancyService],
 })
 export class VacancyModule {}

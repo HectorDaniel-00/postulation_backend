@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
+export enum ModalityOpcion {
+  REMOTO = 'remoto',
+  HIBRIDO = 'hibrido',
+  PRESENCIAL = 'presencial',
+}
 
 export class CreateVacancyDto {
   @ApiProperty({
@@ -42,18 +48,21 @@ export class CreateVacancyDto {
   @IsString()
   tecnologies: string;
 
-  @ApiProperty({ description: 'Ubicación del trabajo', example: 'Remoto' })
+  @ApiProperty({
+    description: 'Ubicación del trabajo',
+    example: 'Barranquilla/Atlantico',
+  })
   @IsNotEmpty()
   @IsString()
   location: string;
 
   @ApiProperty({
     description: 'Modalidad de trabajo',
-    example: 'Tiempo completo',
+    example: 'Remoto',
   })
   @IsNotEmpty()
-  @IsString()
-  modality: string;
+  @IsEnum(ModalityOpcion)
+  modality: ModalityOpcion;
 
   @ApiProperty({ description: 'Rango salarial', example: 50000 })
   @IsNotEmpty()

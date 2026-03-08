@@ -2,7 +2,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../../app.module';
 import { DataSource } from 'typeorm';
-import { seedRoles } from './seeders/role.seeder';
 import { seedUsers } from './seeders/user.seeder';
 import { seedVacancies } from './seeders/vacancy.seeder';
 
@@ -13,9 +12,7 @@ async function seed() {
   const dataSource = app.get(DataSource);
 
   try {
-    const roles = await seedRoles(dataSource);
-
-    await seedUsers(dataSource, roles);
+    await seedUsers(dataSource);
 
     await seedVacancies(dataSource);
 

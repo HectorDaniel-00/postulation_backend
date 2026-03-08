@@ -1,19 +1,21 @@
 // src/seed/seeders/user.seeder.ts
 import { DataSource } from 'typeorm';
 import { UserEntity } from '../../../user/entities/user.entity';
-import { RoleEntity } from '../../../role/entities/role.entity';
 import usersData from '../data/users.json';
 import { Logger } from '@nestjs/common';
-// import * as bcrypt from 'bcrypt'; // descomentar si usas hash
+import { RoleEnum } from '@common/enum';
+//import * as bcrypt from 'bcrypt'; // descomentar si usas hash
 
-export async function seedUsers(dataSource: DataSource, roles: RoleEntity[]) {
+export async function seedUsers(dataSource: DataSource) {
+  //const salt = 10;
+  //const salRound = await bcrypt.genSalt(salt);
   const logger = new Logger(seedUsers.name);
   const repo = dataSource.getRepository(UserEntity);
 
   const count = await repo.count();
   if (count > 0) {
     logger.log('  Usuarios ya existen, saltando...');
-    const existingUsers = await repo.find({ relations: ['role'] });
+    const existingUsers = await repo.find({});
     return existingUsers;
   }
 
@@ -22,7 +24,7 @@ export async function seedUsers(dataSource: DataSource, roles: RoleEntity[]) {
     name: user.name,
     email: user.email,
     password: user.password, // En producción: await bcrypt.hash(user.password, 10)
-    role: roles[user.role_id],
+    role: RoleEnum.CODER,
   }));
 
   const users = await repo.save(usersWithRole);

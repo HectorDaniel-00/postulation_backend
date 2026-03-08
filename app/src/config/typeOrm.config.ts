@@ -10,7 +10,7 @@ const typeOrmConfig = (config: ConfigService): TypeOrmModuleOptions => {
     password: config.get<string>('database.password'),
     database: config.get<string>('database.name'),
     autoLoadEntities: true,
-    synchronize: false,
+    synchronize: true,
   };
 };
 

@@ -1,6 +1,6 @@
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from '../constant';
+import { PUBLIC_KEY, ROLES_KEY } from '../constant';
 
 export class AuthRoleGuard {
   constructor(private reflector: Reflector) {}
@@ -10,6 +10,13 @@ export class AuthRoleGuard {
       context.getHandler(),
       context.getClass(),
     ]);
+
+    const isPublic = this.reflector.getAllAndOverride<string>(PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) return true;
 
     if (!roles || roles.length === 0) return true;
 

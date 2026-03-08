@@ -7,7 +7,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { Role } from 'src/common/enum';
+import { RoleEnum } from 'src/common/enum';
 
 export class CreateUserDto {
   @ApiProperty({ description: 'Nombre del usuario', example: 'Juan Pérez' })
@@ -31,7 +31,11 @@ export class CreateUserDto {
   @MinLength(8)
   password: string;
 
+  @ApiProperty({
+    description: 'Rol del usuario',
+    example: 'coder',
+  })
   @IsOptional()
-  @IsEnum(Role)
-  rol?: Role;
+  @IsEnum(RoleEnum)
+  role: RoleEnum;
 }

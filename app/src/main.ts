@@ -5,6 +5,7 @@ import { ResponseInterceptor } from './common/interceptor';
 import { AuthJwtGuard } from './auth/guard/jwt.guards';
 import { AllExceptionsFilter } from './common/filter/all-exceptions.filter';
 import { setupSwagger } from './config/swagger.config';
+import { AuthRoleGuard } from './common/guard/role.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +19,10 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.useGlobalGuards(new AuthJwtGuard(app.get(Reflector)));
+  app.useGlobalGuards(
+    new AuthJwtGuard(app.get(Reflector)),
+    new AuthRoleGuard(app.get(Reflector)),
+  );
   app.useGlobalInterceptors(new ResponseInterceptor(app.get(Reflector)));
   app.setGlobalPrefix('api');
   setupSwagger(app);
