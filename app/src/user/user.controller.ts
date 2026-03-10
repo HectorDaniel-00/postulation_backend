@@ -27,10 +27,10 @@ import { RoleEnum } from 'src/common/enum';
 export class UserController {
   constructor(private readonly service: UserService) {}
 
-  @Message('Usuario creado con exito')
-  @ApiOperation({ summary: 'Crear un nuevo usuario' })
-  @ApiResponse({ status: 201, description: 'Usuario creado exitosamente.' })
-  @ApiResponse({ status: 403, description: 'Acceso denegado.' })
+  @Message('User successfully created')
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiResponse({ status: 201, description: 'User successfully created.' })
+  @ApiResponse({ status: 403, description: 'Access denied.' })
   @Post()
   @Roles(RoleEnum.ADMIN)
   create(@Body() dto: CreateUserDto) {
@@ -40,11 +40,11 @@ export class UserController {
     });
   }
 
-  @Message('Usuarios encontrado con exito')
-  @ApiOperation({ summary: 'Obtener todos los usuarios' })
-  @ApiResponse({ status: 200, description: 'Lista de usuarios.' })
+  @Message('Users successfully found')
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, description: 'List of users.' })
   @Get()
-  //@Roles(RoleEnum.GESTOR, RoleEnum.ADMIN, RoleEnum.CODER)
+  @Roles(RoleEnum.GESTOR, RoleEnum.ADMIN, RoleEnum.CODER)
   findAll() {
     const user = this.service.findAll();
     return plainToInstance(ResponseUserDto, user, {
@@ -52,10 +52,10 @@ export class UserController {
     });
   }
 
-  @Message('Usuario encontrado con exito')
-  @ApiOperation({ summary: 'Obtener un usuario por ID' })
-  @ApiResponse({ status: 200, description: 'Detalles del usuario.' })
-  @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
+  @Message('User successfully found')
+  @ApiOperation({ summary: 'Get a user by ID' })
+  @ApiResponse({ status: 200, description: 'User details.' })
+  @ApiResponse({ status: 404, description: 'User not found' })
   @Get(':id')
   @Roles(RoleEnum.ADMIN, RoleEnum.GESTOR)
   findOne(@Param('id') id: string) {
@@ -65,7 +65,7 @@ export class UserController {
     });
   }
 
-  @Message('Usuario actualizado con exito')
+  @Message('User successfully updated')
   @Patch(':id')
   @Roles(RoleEnum.ADMIN, RoleEnum.CODER, RoleEnum.GESTOR)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -75,7 +75,7 @@ export class UserController {
     });
   }
 
-  @Message('Usuario eliminado con exito')
+  @Message('Delete user')
   @Delete(':id')
   @Roles(RoleEnum.ADMIN)
   remove(@Param('id') id: string) {

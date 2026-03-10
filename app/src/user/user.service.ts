@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -22,10 +23,17 @@ export class UserService {
 
     const user = await this.userRepo.findOneByEmail(data.email);
     if (user) {
-      this.logger.error(`Error el usuario con el email ${user.email}`);
-      throw new ConflictException(
-        `El email ${user.email} ya existe, por favor ingresar uno diferente`,
+      this.logger.error(
+        `Error: user with email address ${user.email} already exists.`,
       );
+      throw new ConflictException(
+        'There is already a user with that email address.',
+      );
+    }
+
+    if (!hashedPassword) {
+      this.logger.error('Error hashing password');
+      throw new InternalServerErrorException('Internal server error');
     }
 
     const newUser = {
