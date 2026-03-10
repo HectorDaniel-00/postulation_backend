@@ -19,7 +19,7 @@ export class ApplicationController {
   @ApiOperation({ summary: 'Aplicar a una vacante' })
   @ApiResponse({ status: 201, description: 'Aplicación exitosa.' })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
-  @Roles(RoleEnum.ADMIN, RoleEnum.CODER, RoleEnum.GESTOR)
+  @Roles(RoleEnum.CODER)
   @Post(':vacancyId/')
   async applyToVacancy(
     @Param('vacancyId', ParseIntPipe) vacancyId: string,

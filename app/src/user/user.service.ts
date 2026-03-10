@@ -12,14 +12,13 @@ import { RoleEnum } from 'src/common/enum';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly userRepo: UserRepository) {}
   private readonly logger = new Logger(UserService.name);
   private readonly salRound = 10;
-  constructor(private readonly userRepo: UserRepository) {}
 
   async create(data: CreateUserDto) {
     const salt = await bcrypt.genSalt(this.salRound);
     const hashedPassword = await bcrypt.hash(data.password, salt);
-    const roleName = data.role;
 
     const user = await this.userRepo.findOneByEmail(data.email);
     if (user) {
@@ -29,16 +28,11 @@ export class UserService {
       );
     }
 
-    if (roleName != RoleEnum.GESTOR && roleName != RoleEnum.CODER) {
-      this.logger.error('El role ingresado no esta permitido');
-      throw new ConflictException(`El role ingresado no esta permitido`);
-    }
-
     const newUser = {
       name: data.name,
       email: data.email,
       password: hashedPassword,
-      role: roleName ?? RoleEnum.CODER,
+      role: RoleEnum.CODER,
     };
     const createdUser = await this.userRepo.create(newUser);
 

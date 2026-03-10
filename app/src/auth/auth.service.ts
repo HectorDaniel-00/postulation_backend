@@ -21,14 +21,14 @@ export class AuthService {
     const { email, password } = authLoginDto;
     const user = await this.userService.findOneByEmail(email);
     if (!user) {
-      this.logger.error('');
+      this.logger.error('invalid credentials in email or password');
       throw new UnauthorizedException(
         'invalid credentials in email or password',
       );
     }
     const validatePassword = await bcrypt.compare(password, user.password);
     if (!validatePassword) {
-      this.logger.error('');
+      this.logger.error('invalid credentials in email or password');
       throw new UnauthorizedException(
         'invalid credentials in email or password',
       );

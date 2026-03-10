@@ -11,12 +11,43 @@ import { RoleEnum } from 'src/common/enum';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: 'Registrar un nuevo usuario' })
-  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.' })
-  @ApiResponse({ status: 400, description: 'Datos inválidos.' })
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiResponse({
+    status: 201,
+    description: 'User successfully registered.',
+    schema: {
+      example: {
+        succes: true,
+        status: 201,
+        path: '/api/auth/register',
+        message: 'User successfully registered',
+        data: {
+          name: 'jhon doe',
+          email: 'jhondoe@gmail.com',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid data.',
+    schema: {
+      example: {
+        success: false,
+        status: 400,
+        path: '/api/auth/register',
+        message: 'Invalid data',
+        method: 'POST',
+        error: {
+          code: 'INVALID',
+          message: 'Data invalid',
+        },
+      },
+    },
+  })
   @Post('register')
   @Public()
-  @Message('Usuario registrado correctamente')
+  @Message('User successfully registered')
   create(@Body() dto: AuthRegisterDto) {
     const auth = this.authService.register(dto);
     return plainToInstance(AuthResponseDto, auth, {
@@ -24,12 +55,27 @@ export class AuthController {
     });
   }
 
-  @ApiOperation({ summary: 'Iniciar sesión' })
-  @ApiResponse({ status: 200, description: 'Inicio de sesión exitoso.' })
-  @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
+  @ApiOperation({ summary: 'Log in' })
+  @ApiResponse({ status: 200, description: 'Login successful.' })
+  @ApiResponse({
+    status: 401,
+    description: 'Invalid credentials.',
+    schema: {
+      example: {
+        succes: false,
+        status: 401,
+        path: '/api/auth/login',
+        method: 'POST',
+        error: {
+          code: 'UNATIZATION',
+          message: 'Invalid credentials.',
+        },
+      },
+    },
+  })
   @Post('login')
   @Public()
-  @Message('Usuario logueado correctamente')
+  @Message('User logged in successfully')
   login(@Body() dto: AuthLoginDto) {
     const auth = this.authService.login(dto);
     return plainToInstance(AuthResponseDto, auth, {
@@ -37,9 +83,9 @@ export class AuthController {
     });
   }
 
-  @ApiOperation({ summary: 'Iniciar sesión' })
-  @ApiResponse({ status: 200, description: 'Inicio de sesión exitoso.' })
-  @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
+  @ApiOperation({ summary: 'Log in' })
+  @ApiResponse({ status: 200, description: 'Login successful.' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials.' })
   @Get('me')
   @Roles(RoleEnum.ADMIN, RoleEnum.CODER, RoleEnum.GESTOR)
   me(@CurrentUser() data: AuthResponseDto) {
