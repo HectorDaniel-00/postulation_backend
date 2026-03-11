@@ -4,7 +4,9 @@
         "description": "Buscamos un desarrollador backend con experiencia en arquitecturas escalables y microservicios. Responsable de diseñar, desarrollar y mantener APIs RESTful robustas.",
         "seniority": "Senior",
         "softSkills": "Trabajo en equipo, comunicación efectiva, liderazgo técnico, resolución de problemas",
-        "tecnologies": "Node.js, NestJS, TypeScript, PostgreSQL, Docker, Redis",
+        "tecnologies": [
+            "Node.js, NestJS, TypeScript, PostgreSQL, Docker, Redis"
+        ],
         "location": "Remoto",
         "modality": "Tiempo completo",
         "salaryRange": 65000,
@@ -16,7 +18,9 @@
         "description": "Desarrollador frontend para crear interfaces de usuario modernas y responsivas. Colaboración directa con el equipo de diseño UX/UI.",
         "seniority": "Semi-Senior",
         "softSkills": "Creatividad, atención al detalle, trabajo colaborativo, adaptabilidad",
-        "tecnologies": "React, TypeScript, Tailwind CSS, Next.js, Git",
+        "tecnologies": [
+            "React, TypeScript, Tailwind CSS, Next.js, Git"
+        ],
         "location": "Bogotá",
         "modality": "Híbrido",
         "salaryRange": 45000,
@@ -28,7 +32,9 @@
         "description": "Encargado de la infraestructura cloud, automatización de despliegues y monitoreo de aplicaciones en producción.",
         "seniority": "Senior",
         "softSkills": "Pensamiento analítico, proactividad, trabajo bajo presión, comunicación clara",
-        "tecnologies": "AWS, Kubernetes, Docker, Terraform, Jenkins, GitHub Actions",
+        "tecnologies": [
+            "AWS, Kubernetes, Docker, Terraform, Jenkins, GitHub Actions"
+        ],
         "location": "Medellín",
         "modality": "Presencial",
         "salaryRange": 70000,
@@ -40,7 +46,9 @@
         "description": "Oportunidad para desarrollador junior con ganas de aprender y crecer. Trabajarás en proyectos web completos desde el frontend hasta el backend.",
         "seniority": "Junior",
         "softSkills": "Curiosidad, disposición para aprender, trabajo en equipo, comunicación",
-        "tecnologies": "JavaScript, React, Node.js, Express, MongoDB, Git",
+        "tecnologies": [
+            "JavaScript, React, Node.js, Express, MongoDB, Git"
+        ],
         "location": "Remoto",
         "modality": "Tiempo completo",
         "salaryRange": 30000,
@@ -52,7 +60,9 @@
         "description": "Liderar el diseño de arquitecturas de software escalables y mantenibles. Definir estándares de desarrollo y guiar al equipo técnico.",
         "seniority": "Expert",
         "softSkills": "Liderazgo, visión estratégica, mentoría, toma de decisiones, comunicación ejecutiva",
-        "tecnologies": "Microservicios, Event-Driven Architecture, AWS, Azure, Domain-Driven Design, Clean Architecture",
+        "tecnologies": [
+            "Microservicios, Event-Driven Architecture, AWS, Azure, Domain-Driven Design, Clean Architecture"
+        ],
         "location": "Cali",
         "modality": "Híbrido",
         "salaryRange": 90000,

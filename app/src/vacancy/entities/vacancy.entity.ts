@@ -19,7 +19,7 @@ export class VacancyEntity {
   @Column({ name: 'soft_skills', nullable: false })
   softSkills: string;
 
-  @Column({ nullable: false, type: 'array' })
+  @Column({ nullable: false, type: 'text', array: true })
   tecnologies: string[];
 
   @Column({ nullable: false })
