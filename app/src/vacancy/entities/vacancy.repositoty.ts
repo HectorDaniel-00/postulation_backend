@@ -25,6 +25,10 @@ export class VacancyRepository {
     return await this.repo.findOne({ where: { id } });
   }
 
+  async findOneByName(title: string): Promise<VacancyEntity | null> {
+    return await this.repo.findOne({ where: { title } });
+  }
+
   async toggleActive(id: string): Promise<VacancyEntity | null> {
     return await this.repo.findOne({ where: { id, isActive: true } });
   }
