@@ -2,6 +2,7 @@ export default () => ({
   app: {
     port: parseInt(process.env.APP_PORT ?? '3000', 10),
     nodeEnv: process.env.NODE_ENV || 'development',
+    apiKey: process.env.API_KEY!,
   },
   database: {
     host: process.env.POSTGRES_HOST!,

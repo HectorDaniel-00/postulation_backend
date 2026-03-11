@@ -17,12 +17,15 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
+  ApiSecurity,
 } from '@nestjs/swagger';
 import { Message } from 'src/common/decorator';
 import { AuthRoleGuard } from 'src/common/guard/role.guard';
 import { RoleEnum } from 'src/common/enum';
 
 @ApiTags('Vacancies')
+@ApiSecurity('x-api-key')
+@ApiBearerAuth('access-token')
 @Controller('vacancies')
 export class VacancyController {
   constructor(private readonly service: VacancyService) {}
