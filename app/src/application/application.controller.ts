@@ -6,11 +6,13 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
+  ApiSecurity,
 } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enum';
 
 @ApiTags('Apply')
 @ApiBearerAuth('access-token')
+@ApiSecurity('x-api-key')
 @Controller('apply')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
