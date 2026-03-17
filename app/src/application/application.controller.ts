@@ -15,18 +15,21 @@ import { RoleEnum } from 'src/common/enum';
 @ApiSecurity('x-api-key')
 @Controller('apply')
 export class ApplicationController {
+  // Inyección del servicio de aplicaciones para gestionar las postulaciones de candidatos
   constructor(private readonly applicationService: ApplicationService) {}
 
   @Message('Se aplico con exito a la vacante')
   @ApiOperation({ summary: 'Aplicar a una vacante' })
   @ApiResponse({ status: 201, description: 'Aplicación exitosa.' })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
-  @Roles(RoleEnum.CODER)
+  @Roles(RoleEnum.CODER) // Solo los usuarios con rol de CODER (candidatos) pueden aplicar
   @Post(':vacancyId/')
   async applyToVacancy(
     @Param('vacancyId', ParseIntPipe) vacancyId: string,
+    // Obtiene automáticamente el ID del usuario autenticado de la sesión
     @CurrentUser() user: { id: string },
   ) {
+    // Procesa la postulación del usuario a la vacante especificada
     return this.applicationService.apply(user.id, vacancyId);
   }
 }

@@ -9,6 +9,7 @@ import { RoleEnum } from 'src/common/enum';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
+  // El constructor inyecta el servicio AuthService para manejar la lógica de negocio
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Register a new user' })
@@ -46,10 +47,12 @@ export class AuthController {
     },
   })
   @Post('register')
-  @Public()
+  @Public() // Endpoint público (no requiere token previo)
   @Message('User successfully registered')
   create(@Body() dto: AuthRegisterDto) {
+    // Llama al servicio para registrar un nuevo usuario
     const auth = this.authService.register(dto);
+    // Transforma el resultado a una instancia de AuthResponseDto filtrando campos no deseados
     return plainToInstance(AuthResponseDto, auth, {
       excludeExtraneousValues: true,
     });
@@ -74,10 +77,12 @@ export class AuthController {
     },
   })
   @Post('login')
-  @Public()
+  @Public() // Endpoint público
   @Message('User logged in successfully')
   login(@Body() dto: AuthLoginDto) {
+    // Llama al servicio para validar credenciales y obtener el token
     const auth = this.authService.login(dto);
+    // Transforma el resultado para la respuesta
     return plainToInstance(AuthResponseDto, auth, {
       excludeExtraneousValues: true,
     });
@@ -87,8 +92,10 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login successful.' })
   @ApiResponse({ status: 401, description: 'Invalid credentials.' })
   @Get('me')
+  @Public()
   @Roles(RoleEnum.ADMIN, RoleEnum.CODER, RoleEnum.GESTOR)
   me(@CurrentUser() data: AuthResponseDto) {
+    // Retorna los datos del usuario actual obtenidos mediante el decorador @CurrentUser
     return plainToInstance(AuthResponseDto, data, {
       excludeExtraneousValues: true,
     });

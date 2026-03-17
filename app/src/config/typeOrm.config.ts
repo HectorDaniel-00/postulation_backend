@@ -11,6 +11,9 @@ const typeOrmConfig = (config: ConfigService): TypeOrmModuleOptions => {
     database: config.get<string>('database.name'),
     autoLoadEntities: true,
     synchronize: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   };
 };
 
