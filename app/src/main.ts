@@ -32,7 +32,7 @@ async function bootstrap() {
   await app.listen(PORT);
   logger.log(`Servidor expuesto en: http://localhost:${PORT}/api`);
   logger.log(
-    `Documentacion de la API expuesta en: http://localhost:${PORT}/api/docs`,
+    `Documentacion de la API expuesta en: http://localhost:${PORT}/api-docs`,
   );
 }
 bootstrap();
