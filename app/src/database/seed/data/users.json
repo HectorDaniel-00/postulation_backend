@@ -1,17 +1,20 @@
 [
     {
-        "name": "Chonchito Feliz",
-        "email": "chonchitofeliz@example.com",
-        "password": "chonchitofeliz123"
+        "name": "Administrador",
+        "email": "admin@example.com",
+        "password": "Admin4321",
+        "role": "administrador"
     },
     {
-        "name": "jhon doe",
-        "email": "jhonDoee@example.com",
-        "password": "jhondoe123"
+        "name": "Gestor De vacantes",
+        "email": "gestor@example.com",
+        "password": "Gestor4321",
+        "role": "gestor"
     },
     {
         "name": "Coder",
         "email": "coder@example.com",
-        "password": "coder123"
+        "password": "Coder4321",
+        "role": "coder"
     }
 ]

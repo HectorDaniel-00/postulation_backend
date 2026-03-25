@@ -17,6 +17,14 @@ export function setupSwagger(app: INestApplication) {
     .addTag('Users', 'Gestión de usuarios')
     // .addTag('Roles', 'Gestión de roles y permisos')
     .addTag('Vacancies', 'Gestión de vacantes')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'x-api-key',
+        in: 'header',
+      },
+      'x-api-key',
+    )
     .addBearerAuth(
       {
         type: 'http',
@@ -32,7 +40,7 @@ export function setupSwagger(app: INestApplication) {
 
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api/docs', app, document, {
+  SwaggerModule.setup('api-docs', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },

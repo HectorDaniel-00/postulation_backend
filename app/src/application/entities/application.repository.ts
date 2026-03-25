@@ -22,6 +22,13 @@ export class ApplicationRepository {
     );
   }
 
+  async findAll() {
+    return this.repo.find({
+      relations: ['user', 'vacancy'],
+      order: { createdAt: 'DESC' },
+    });
+  }
+
   async findByUserAndVacancy(userId: string, vacancyId: string) {
     return this.repo.findOne({
       where: {

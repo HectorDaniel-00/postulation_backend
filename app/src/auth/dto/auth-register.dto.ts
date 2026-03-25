@@ -1,11 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
-import { RoleEnum } from 'src/common/enum';
+import {
+  IsEmail,
+  IsLowercase,
+  IsNotEmpty,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 
 export class AuthRegisterDto {
+  // ? Name
   @ApiProperty({
     example: 'John Doe',
-    description: 'Nombre completo del usuario',
+    description: 'Full Name',
     type: 'string',
     required: true,
   })
@@ -14,36 +21,39 @@ export class AuthRegisterDto {
   @Length(2, 50, { message: 'Name must be between 2 and 50 characters' })
   name: string;
 
+  // ? Email
   @ApiProperty({
     example: 'john.doe@example.com',
-    description: 'Correo electrónico del usuario',
+    description: 'Email',
     type: 'string',
     required: true,
   })
   @IsNotEmpty({ message: 'Email is required' })
   @IsEmail({}, { message: 'Email must be a valid email address' })
+  @Matches(/\.com$/, { message: 'The email address must end in .com.' })
+  @IsLowercase({
+    message: 'The email must be written entirely in lowercase letters.',
+  })
   email: string;
 
+  // ? Password
   @ApiProperty({
-    example: 'password123',
-    description: 'Contraseña del usuario',
+    example: 'Password1234',
+    description: 'Password',
     type: 'string',
     required: true,
   })
   @IsNotEmpty({ message: 'Password is required' })
   @IsString({ message: 'Password must be a string' })
   @Length(6, 15, { message: 'Password must be between 6 and 15 characters' })
+  @Matches(/(?=.*[a-z])/, {
+    message: 'The password must contain at least one lowercase letter',
+  })
+  @Matches(/(?=.*[A-Z])/, {
+    message: 'The password must contain at least one uppercase letter.',
+  })
+  @Matches(/(?=.*\d)/, {
+    message: 'The password must contain at least one number.',
+  })
   password: string;
-
-  @ApiProperty({
-    example: 'coder',
-    description: 'gestor o coder',
-    type: 'string',
-    required: true,
-  })
-  @IsNotEmpty({ message: 'Role is required' })
-  @IsEnum(RoleEnum, {
-    message: `Los roles permitidos son ${RoleEnum.CODER}, ${RoleEnum.GESTOR} `,
-  })
-  role: RoleEnum;
 }

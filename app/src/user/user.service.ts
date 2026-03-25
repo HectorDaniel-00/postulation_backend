@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,44 +13,51 @@ import { RoleEnum } from 'src/common/enum';
 
 @Injectable()
 export class UserService {
-  private readonly logger = new Logger(UserService.name);
-  private readonly salRound = 10;
   constructor(private readonly userRepo: UserRepository) {}
+  private readonly logger = new Logger(UserService.name);
+  private readonly salRound = 10; // Número de rondas de sal para el hashing de contraseñas
 
+  // Crea un nuevo usuario con la contraseña encriptada
   async create(data: CreateUserDto) {
+    // Genera el salt y hashea la contraseña por seguridad
     const salt = await bcrypt.genSalt(this.salRound);
     const hashedPassword = await bcrypt.hash(data.password, salt);
-    const roleName = data.role;
 
+    // Verifica si el correo ya está registrado para evitar duplicados
     const user = await this.userRepo.findOneByEmail(data.email);
     if (user) {
-      this.logger.error(`Error el usuario con el email ${user.email}`);
+      this.logger.error(
+        `Error: user with email address ${user.email} already exists.`,
+      );
       throw new ConflictException(
-        `El email ${user.email} ya existe, por favor ingresar uno diferente`,
+        'There is already a user with that email address.',
       );
     }
 
-    if (roleName != RoleEnum.GESTOR && roleName != RoleEnum.CODER) {
-      this.logger.error('El role ingresado no esta permitido');
-      throw new ConflictException(`El role ingresado no esta permitido`);
+    if (!hashedPassword) {
+      this.logger.error('Error hashing password');
+      throw new InternalServerErrorException('Internal server error');
     }
 
+    // Por defecto asume el rol de CODER (candidato) para nuevos registros
     const newUser = {
       name: data.name,
       email: data.email,
       password: hashedPassword,
-      role: roleName ?? RoleEnum.CODER,
+      role: RoleEnum.CODER,
     };
     const createdUser = await this.userRepo.create(newUser);
 
     return createdUser;
   }
 
+  // Retorna una lista de todos los usuarios registrados
   async findAll() {
     const user = await this.userRepo.findAll();
     if (user.length <= 0) {
       throw new NotFoundException('Lista de usuarios vacia');
     }
+    // Mapea los resultados para no exponer datos sensibles
     return user.map((user) => ({
       id: user.id,
       name: user.name,
@@ -58,6 +66,7 @@ export class UserService {
     }));
   }
 
+  // Busca un usuario por su ID único
   async findOne(id: string) {
     if (!id) {
       throw new BadRequestException(
@@ -75,6 +84,7 @@ export class UserService {
     return user;
   }
 
+  // Busca un usuario por su correo electrónico (usado en autenticación)
   async findOneByEmail(email: string) {
     if (!email) {
       this.logger.error('EL Campo email esta vacio');
@@ -91,6 +101,7 @@ export class UserService {
     return user;
   }
 
+  // Actualiza la información básica de un usuario
   async update(id: string, data: UpdateUserDto) {
     if (!id) {
       throw new BadRequestException(
@@ -103,6 +114,8 @@ export class UserService {
         `El usuario con el id ${id} no existe, por favor cambie el dato ingresado y vuelta a intentarlo`,
       );
     }
+
+    // Solo permite actualizar nombre y email; el rol se mantiene
     const updateUser = {
       name: data.name ?? user.name,
       email: data.email ?? user.email,
@@ -113,6 +126,7 @@ export class UserService {
     return modifyUser;
   }
 
+  // Elimina un usuario por su ID
   async remove(id: string) {
     if (!id) {
       throw new BadRequestException('Campo requerido esta vacio');

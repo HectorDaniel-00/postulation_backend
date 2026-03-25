@@ -1,6 +1,14 @@
 import { ApplicationEntity } from 'src/application/entities/application.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ModalityOpcion } from '../dto';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Entity('vacancies')
 export class VacancyEntity {
@@ -19,8 +27,8 @@ export class VacancyEntity {
   @Column({ name: 'soft_skills', nullable: false })
   softSkills: string;
 
-  @Column({ nullable: false })
-  tecnologies: string;
+  @Column({ nullable: false, type: 'text', array: true })
+  tecnologies: string[];
 
   @Column({ nullable: false })
   location: string;
@@ -30,6 +38,10 @@ export class VacancyEntity {
 
   @Column({ nullable: false, type: 'enum', enum: ModalityOpcion })
   modality: string;
+
+  @ManyToOne(() => UserEntity, (user) => user.vacancies, { eager: true })
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
 
   @Column({ name: 'salary_range', nullable: false })
   salaryRange: number;

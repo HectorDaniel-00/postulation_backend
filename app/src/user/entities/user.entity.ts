@@ -1,5 +1,6 @@
 import { RoleEnum } from '@common/enum/index';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { VacancyEntity } from 'src/vacancy/entities/vacancy.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
@@ -14,6 +15,9 @@ export class UserEntity {
 
   @Column({ nullable: false, type: 'text' })
   password: string;
+
+  @OneToMany(() => VacancyEntity, (vacancy) => vacancy.user)
+  vacancies: VacancyEntity[];
 
   @Column({
     type: 'enum',

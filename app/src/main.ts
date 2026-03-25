@@ -6,11 +6,13 @@ import { AuthJwtGuard } from './auth/guard/jwt.guards';
 import { AllExceptionsFilter } from './common/filter/all-exceptions.filter';
 import { setupSwagger } from './config/swagger.config';
 import { AuthRoleGuard } from './common/guard/role.guard';
+import { ApikeyGuard } from '@common/guard/apikey.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const PORT = process.env.APP_PORT ?? 3000;
   const logger = new Logger(bootstrap.name);
+  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -20,6 +22,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalGuards(
+    new ApikeyGuard(app.get(Reflector)),
     new AuthJwtGuard(app.get(Reflector)),
     new AuthRoleGuard(app.get(Reflector)),
   );
@@ -29,7 +32,7 @@ async function bootstrap() {
   await app.listen(PORT);
   logger.log(`Servidor expuesto en: http://localhost:${PORT}/api`);
   logger.log(
-    `Documentacion de la API expuesta en: http://localhost:${PORT}/api/docs`,
+    `Documentacion de la API expuesta en: http://localhost:${PORT}/api-docs`,
   );
 }
 bootstrap();
