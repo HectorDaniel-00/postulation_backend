@@ -4,6 +4,7 @@ import { AppModule } from '../../app.module';
 import { DataSource } from 'typeorm';
 import { seedUsers } from './seeders/user.seeder';
 import { seedVacancies } from './seeders/vacancy.seeder';
+import { RoleEnum } from '@common/enum';
 
 async function seed() {
   console.log(' Iniciando seed de la base de datos...\n');
@@ -12,9 +13,13 @@ async function seed() {
   const dataSource = app.get(DataSource);
 
   try {
-    await seedUsers(dataSource);
+    const users = await seedUsers(dataSource);
+    const gestor = users.find((u) => u.role === RoleEnum.GESTOR);
 
-    await seedVacancies(dataSource);
+    await seedVacancies(
+      dataSource,
+      gestor?.id ?? 'd05997aa-cf08-4a49-ab44-32795b400d9a',
+    );
 
     console.log('\n Seed completado exitosamente');
   } catch (error) {

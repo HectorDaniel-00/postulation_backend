@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ApplicationRepository } from './entities/application.repository';
 
 @Injectable()
@@ -18,5 +22,27 @@ export class ApplicationService {
 
     // Registra la postulación en la base de datos
     return this.repo.applyToVacancy(dto);
+  }
+
+  async findAll() {
+    const applications = await this.repo.findAll();
+    if (!applications) {
+      throw new NotFoundException('Applications not found');
+    }
+    return applications;
+  }
+
+  async findAllByUser(id: string) {
+    if (!id) {
+      throw new NotFoundException('User not found');
+    }
+    return this.repo.findAllByUser(id);
+  }
+
+  async findAllByVacancy(id: string) {
+    if (!id) {
+      throw new NotFoundException('Vacancy not found');
+    }
+    return this.repo.findAllByVacancy(id);
   }
 }

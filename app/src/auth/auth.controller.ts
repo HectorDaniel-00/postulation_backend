@@ -1,12 +1,23 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthLoginDto, AuthRegisterDto, AuthResponseDto } from './dto';
+import {
+  AuthLoginDto,
+  AuthPayloadDto,
+  AuthRegisterDto,
+  AuthResponseDto,
+} from './dto';
 import { CurrentUser, Message, Public, Roles } from 'src/common/decorator';
 import { plainToInstance } from 'class-transformer';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { RoleEnum } from 'src/common/enum';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiSecurity,
+} from '@nestjs/swagger';
+import { RoleEnum } from '@common/enum';
 
 @ApiTags('Auth')
+@ApiSecurity('x-api-key')
 @Controller('auth')
 export class AuthController {
   // El constructor inyecta el servicio AuthService para manejar la lógica de negocio
@@ -92,12 +103,10 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login successful.' })
   @ApiResponse({ status: 401, description: 'Invalid credentials.' })
   @Get('me')
-  @Public()
-  @Roles(RoleEnum.ADMIN, RoleEnum.CODER, RoleEnum.GESTOR)
-  me(@CurrentUser() data: AuthResponseDto) {
+  @Roles(RoleEnum.ADMIN, RoleEnum.GESTOR, RoleEnum.CODER)
+  me(@CurrentUser() user: AuthPayloadDto) {
     // Retorna los datos del usuario actual obtenidos mediante el decorador @CurrentUser
-    return plainToInstance(AuthResponseDto, data, {
-      excludeExtraneousValues: true,
-    });
+    console.log('USER:', user);
+    return user;
   }
 }

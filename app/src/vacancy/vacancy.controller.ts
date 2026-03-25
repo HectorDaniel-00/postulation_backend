@@ -19,9 +19,10 @@ import {
   ApiBearerAuth,
   ApiSecurity,
 } from '@nestjs/swagger';
-import { Message } from 'src/common/decorator';
+import { CurrentUser, Message } from 'src/common/decorator';
 import { AuthRoleGuard } from 'src/common/guard/role.guard';
 import { RoleEnum } from 'src/common/enum';
+import { AuthPayloadDto } from 'src/auth/dto';
 
 @ApiTags('Vacancies')
 @ApiSecurity('x-api-key')
@@ -39,9 +40,9 @@ export class VacancyController {
   @Post()
   @Roles(RoleEnum.ADMIN, RoleEnum.GESTOR) // Solo administradores o gestores pueden crear vacantes
   @UseGuards(AuthRoleGuard)
-  create(@Body() dto: CreateVacancyDto) {
+  create(@Body() dto: CreateVacancyDto, @CurrentUser() user: AuthPayloadDto) {
     // Crea una nueva vacante en el sistema
-    return this.service.create(dto);
+    return this.service.create(dto, user.id!);
   }
 
   @Message('Exito a obtener todas las vacantes')

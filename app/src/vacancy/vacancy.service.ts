@@ -14,9 +14,13 @@ export class VacancyService {
   private readonly logger = new Logger(VacancyService.name);
 
   // Crea una nueva vacante en el repositorio
-  async create(dto: CreateVacancyDto) {
-    const vacanciesNew = { ...dto };
-    return await this.repo.create(vacanciesNew);
+  async create(dto: CreateVacancyDto, userId: string) {
+    const newVacancy = {
+      ...dto,
+      user: { id: userId },
+    };
+
+    return await this.repo.create(newVacancy);
   }
 
   // Recupera todas las vacantes; lanza excepción si no hay ninguna

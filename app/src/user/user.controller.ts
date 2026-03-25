@@ -10,7 +10,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Message, Roles } from 'src/common/decorator';
+import { Message, Roles, Public } from 'src/common/decorator';
 import { plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto';
 import {
@@ -48,7 +48,7 @@ export class UserController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'List of users.' })
   @Get()
-  @Roles(RoleEnum.GESTOR, RoleEnum.ADMIN, RoleEnum.CODER)
+  @Public()
   findAll() {
     // Obtiene todos los usuarios y los transforma a DTO de respuesta
     const user = this.service.findAll();

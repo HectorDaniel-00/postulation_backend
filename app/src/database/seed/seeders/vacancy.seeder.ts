@@ -5,7 +5,7 @@ import vacanciesData from '../data/vacancy.json';
 import { Logger } from '@nestjs/common';
 import { ModalityOpcion } from 'src/vacancy/dto';
 
-export async function seedVacancies(dataSource: DataSource) {
+export async function seedVacancies(dataSource: DataSource, gestorId: string) {
   const logger = new Logger(seedVacancies.name);
   const repo = dataSource.getRepository(VacancyEntity);
 
@@ -27,6 +27,7 @@ export async function seedVacancies(dataSource: DataSource) {
     salaryRange: vacancie.salaryRange,
     company: vacancie.company,
     maxApplicants: vacancie.maxApplicants,
+    user: { id: gestorId },
   }));
 
   const vacancies = await repo.save(vacanciesWithModality);

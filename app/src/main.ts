@@ -22,7 +22,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalGuards(
-    new ApikeyGuard(),
+    new ApikeyGuard(app.get(Reflector)),
     new AuthJwtGuard(app.get(Reflector)),
     new AuthRoleGuard(app.get(Reflector)),
   );
